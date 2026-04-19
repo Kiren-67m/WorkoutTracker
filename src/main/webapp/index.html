@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Workout</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("form").submit(function(e) {
+                var date = $("input[name='workout_date']").val();
+                var type = $("input[name='workout_type']").val();
+                var duration = $("input[name='duration_minutes']").val();
+                if (date === "" || type === "" || duration === "") {
+                    $("#error-msg").text("Please fill in all required fields.").show();
+                    $("#error-msg").fadeOut(2000);
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>Add New Workout</h2>
+    <p id="error-msg" style="color:red; display:none;"></p>
+    <form action="WorkoutServlet" method="post">
+        <input type="hidden" name="action" value="add">
+        <table>
+            <tr>
+                <td>Date:</td>
+                <td><input type="date" name="workout_date" required></td>
+            </tr>
+            <tr>
+                <td>Type:</td>
+                <td><input type="text" name="workout_type" required></td>
+            </tr>
+            <tr>
+                <td>Duration (minutes):</td>
+                <td><input type="number" name="duration_minutes" required></td>
+            </tr>
+            <tr>
+                <td>Notes:</td>
+                <td><textarea name="notes"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Add Workout">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <a href="WorkoutServlet">View All Workouts</a>
+</body>
+</html>
