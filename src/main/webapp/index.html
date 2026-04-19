@@ -2,16 +2,134 @@
 <html>
 <head>
     <title>Add Workout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $("form").submit(function(e) {
+        if (typeof jQuery === 'undefined') {
+            document.write('<script src="jquery-3.6.0.min.js"><\/script>');
+        }
+    </script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333333;
+        }
+
+        header {
+            background-color: #222222;
+            color: #ffffff;
+            padding: 20px 40px;
+        }
+
+        header h1 { font-size: 24px; letter-spacing: 1px; }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 30px;
+            border-top: 3px solid #333333;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 24px;
+            color: #222222;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 18px;
+        }
+
+        .form-row label {
+            font-size: 13px;
+            color: #666666;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-row input,
+        .form-row textarea {
+            padding: 10px 12px;
+            border: 1px solid #cccccc;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+        }
+
+        .form-row input:focus,
+        .form-row textarea:focus {
+            outline: none;
+            border-color: #555555;
+            background-color: #ffffff;
+        }
+
+        .form-row textarea { resize: vertical; min-height: 80px; }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            background-color: #333333;
+            color: #ffffff;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn:hover { background-color: #555555; }
+
+        .btn-link {
+            font-size: 14px;
+            color: #888888;
+            text-decoration: none;
+            border-bottom: 1px solid #cccccc;
+        }
+
+        .btn-link:hover { color: #333333; }
+
+        #error-msg {
+            background-color: #f9f0f0;
+            border-left: 3px solid #cc0000;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #cc0000;
+            margin-bottom: 18px;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 12px;
+            color: #aaaaaa;
+            margin-top: 40px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function (e) {
                 var date = $("input[name='workout_date']").val();
                 var type = $("input[name='workout_type']").val();
                 var duration = $("input[name='duration_minutes']").val();
                 if (date === "" || type === "" || duration === "") {
                     $("#error-msg").text("Please fill in all required fields.").show();
-                    $("#error-msg").fadeOut(2000);
+                    $("#error-msg").fadeOut(3000);
                     e.preventDefault();
                 }
             });
@@ -19,35 +137,41 @@
     </script>
 </head>
 <body>
-    <h2>Add New Workout</h2>
-    <p id="error-msg" style="color:red; display:none;"></p>
-    <form action="WorkoutServlet" method="post">
-        <input type="hidden" name="action" value="add">
-        <table>
-            <tr>
-                <td>Date:</td>
-                <td><input type="date" name="workout_date" required></td>
-            </tr>
-            <tr>
-                <td>Type:</td>
-                <td><input type="text" name="workout_type" required></td>
-            </tr>
-            <tr>
-                <td>Duration (minutes):</td>
-                <td><input type="number" name="duration_minutes" required></td>
-            </tr>
-            <tr>
-                <td>Notes:</td>
-                <td><textarea name="notes"></textarea></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" value="Add Workout">
-                </td>
-            </tr>
-        </table>
-    </form>
-    <br>
-    <a href="WorkoutServlet">View All Workouts</a>
+
+<header>
+    <h1>Workout Tracker</h1>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>Add New Workout</h2>
+        <div id="error-msg"></div>
+        <form action="WorkoutServlet" method="post">
+            <input type="hidden" name="action" value="add">
+            <div class="form-row">
+                <label>Date *</label>
+                <input type="date" name="workout_date" required>
+            </div>
+            <div class="form-row">
+                <label>Workout Type *</label>
+                <input type="text" name="workout_type" placeholder="e.g. Running, Cycling" required>
+            </div>
+            <div class="form-row">
+                <label>Duration (minutes) *</label>
+                <input type="number" name="duration_minutes" min="1" required>
+            </div>
+            <div class="form-row">
+                <label>Notes</label>
+                <textarea name="notes" placeholder="Optional notes about this session"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn">Add Workout</button>
+                <a href="WorkoutServlet" class="btn-link">View All Workouts</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 </body>
 </html>
